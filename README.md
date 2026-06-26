@@ -1,34 +1,28 @@
-# Bol-o-Copa-Credit corrigido
+# Bolão da Copa Credit - Projeto Definitivo
 
-Este ZIP corrige o erro da Vercel:
+Este pacote substitui completamente o template padrão do Vite.
 
-`Failed to resolve /src/main.jsx from /index.html`
+## Estrutura correta
 
-Agora o projeto possui:
+- package.json
+- vite.config.js
+- index.html
+- src/main.jsx
+- src/App.jsx
+- src/styles.css
+- public/manifest.json
+- supabase_schema.sql
 
-- `index.html`
-- `src/main.jsx`
-- `src/styles.css`
-- `package.json`
-- `vite.config.js`
-- `supabase_schema.sql`
-
-## Como corrigir no GitHub
+## Para substituir no GitHub
 
 1. Baixe este ZIP.
-2. Descompacte.
-3. Abra a pasta descompactada.
-4. No seu repositório GitHub, apague os arquivos antigos ou envie estes arquivos por cima.
-5. O importante é que a raiz do repositório tenha:
-   - package.json
-   - index.html
-   - vite.config.js
-   - src/main.jsx
-   - src/styles.css
+2. Extraia.
+3. No GitHub, apague/substitua os arquivos antigos.
+4. Envie todos os arquivos de dentro da pasta extraída.
+5. Faça commit.
+6. Na Vercel, clique em Redeploy.
 
-## Variáveis na Vercel
-
-Mantenha estas três variáveis:
+## Variáveis da Vercel
 
 - VITE_SUPABASE_URL
 - VITE_SUPABASE_ANON_KEY
@@ -36,8 +30,5 @@ Mantenha estas três variáveis:
 
 ## Supabase
 
-Execute o arquivo `supabase_schema.sql` no SQL Editor do Supabase.
-
-No Storage, crie um bucket público chamado:
-
-`avatars`
+Execute o arquivo `supabase_schema.sql` no SQL Editor.
+Crie o bucket público `avatars` no Storage.
