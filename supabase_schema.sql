@@ -1,7 +1,4 @@
 
--- BOLÃO DA COPA CREDIT - SUPABASE SCHEMA
--- Execute este arquivo no Supabase > SQL Editor.
-
 create extension if not exists "pgcrypto";
 
 create table if not exists public.participants (
@@ -35,7 +32,7 @@ create table if not exists public.game_result (
   japan_score int not null default 0,
   first_goal_player text not null default 'Nenhum',
   updated_at timestamptz default now(),
-  constraint single_game_result check (id = 1)
+  constraint one_row_only check (id = 1)
 );
 
 insert into public.game_result (id, result, brazil_score, japan_score, first_goal_player)
@@ -46,58 +43,34 @@ alter table public.participants enable row level security;
 alter table public.bets enable row level security;
 alter table public.game_result enable row level security;
 
-drop policy if exists "participants_select_public" on public.participants;
-create policy "participants_select_public"
-on public.participants for select
-using (true);
+drop policy if exists "participants_select" on public.participants;
+create policy "participants_select" on public.participants for select using (true);
 
-drop policy if exists "participants_insert_public" on public.participants;
-create policy "participants_insert_public"
-on public.participants for insert
-with check (true);
+drop policy if exists "participants_insert" on public.participants;
+create policy "participants_insert" on public.participants for insert with check (true);
 
-drop policy if exists "participants_update_public" on public.participants;
-create policy "participants_update_public"
-on public.participants for update
-using (true);
+drop policy if exists "participants_update" on public.participants;
+create policy "participants_update" on public.participants for update using (true);
 
-drop policy if exists "participants_delete_public" on public.participants;
-create policy "participants_delete_public"
-on public.participants for delete
-using (true);
+drop policy if exists "participants_delete" on public.participants;
+create policy "participants_delete" on public.participants for delete using (true);
 
-drop policy if exists "bets_select_public" on public.bets;
-create policy "bets_select_public"
-on public.bets for select
-using (true);
+drop policy if exists "bets_select" on public.bets;
+create policy "bets_select" on public.bets for select using (true);
 
-drop policy if exists "bets_insert_public" on public.bets;
-create policy "bets_insert_public"
-on public.bets for insert
-with check (true);
+drop policy if exists "bets_insert" on public.bets;
+create policy "bets_insert" on public.bets for insert with check (true);
 
-drop policy if exists "bets_update_public" on public.bets;
-create policy "bets_update_public"
-on public.bets for update
-using (true);
+drop policy if exists "bets_update" on public.bets;
+create policy "bets_update" on public.bets for update using (true);
 
-drop policy if exists "bets_delete_public" on public.bets;
-create policy "bets_delete_public"
-on public.bets for delete
-using (true);
+drop policy if exists "bets_delete" on public.bets;
+create policy "bets_delete" on public.bets for delete using (true);
 
-drop policy if exists "game_result_select_public" on public.game_result;
-create policy "game_result_select_public"
-on public.game_result for select
-using (true);
+drop policy if exists "result_select" on public.game_result;
+create policy "result_select" on public.game_result for select using (true);
 
-drop policy if exists "game_result_update_public" on public.game_result;
-create policy "game_result_update_public"
-on public.game_result for update
-using (true);
+drop policy if exists "result_update" on public.game_result;
+create policy "result_update" on public.game_result for update using (true);
 
--- STORAGE
--- Depois de executar o SQL:
--- 1. Vá em Supabase > Storage.
--- 2. Crie um bucket chamado: avatars
--- 3. Marque como Public bucket.
+-- No Supabase Storage, crie um bucket público chamado: avatars

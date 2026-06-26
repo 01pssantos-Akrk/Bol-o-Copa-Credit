@@ -1,62 +1,43 @@
-# Bolão da Copa Credit Online
+# Bol-o-Copa-Credit corrigido
 
-Projeto atualizado e pronto para publicar na Vercel com Supabase.
+Este ZIP corrige o erro da Vercel:
 
-## O que já vem pronto
+`Failed to resolve /src/main.jsx from /index.html`
 
-- Cadastro por CPF, nome, equipe e foto.
-- 10 pontos por CPF.
-- 1 aposta por CPF.
-- Admin com senha `CopaAkrk`.
-- Admin pode atualizar resultado, excluir participante e liberar nova aposta.
-- Ranking Top 5 com foto.
-- Regras resumidas sem mencionar prêmio, apenas os 5 primeiros colocados.
-- Jogadores do Brasil e Japão no campo "Jogador do primeiro gol".
-- QR Code automático após publicar.
-- Visual inspirado nas praias do Rio de Janeiro.
+Agora o projeto possui:
 
-## Como subir para o GitHub pelo navegador
+- `index.html`
+- `src/main.jsx`
+- `src/styles.css`
+- `package.json`
+- `vite.config.js`
+- `supabase_schema.sql`
 
-1. Descompacte este ZIP no computador.
-2. Abra a pasta descompactada.
-3. Entre no seu repositório GitHub.
-4. Clique em `uploading an existing file`.
-5. Arraste todos os arquivos e pastas de dentro da pasta descompactada.
-6. Clique em `Commit changes`.
+## Como corrigir no GitHub
 
-## Como configurar o Supabase
+1. Baixe este ZIP.
+2. Descompacte.
+3. Abra a pasta descompactada.
+4. No seu repositório GitHub, apague os arquivos antigos ou envie estes arquivos por cima.
+5. O importante é que a raiz do repositório tenha:
+   - package.json
+   - index.html
+   - vite.config.js
+   - src/main.jsx
+   - src/styles.css
 
-1. Acesse https://supabase.com
-2. Crie um projeto.
-3. Abra `supabase_schema.sql`.
-4. Copie tudo.
-5. No Supabase, vá em SQL Editor.
-6. Cole e execute.
-7. Vá em Storage.
-8. Crie um bucket público chamado `avatars`.
+## Variáveis na Vercel
 
-## Variáveis para Vercel
+Mantenha estas três variáveis:
 
-No Supabase:
-- Project Settings > API
-- Copie:
-  - Project URL
-  - anon public key
+- VITE_SUPABASE_URL
+- VITE_SUPABASE_ANON_KEY
+- VITE_ADMIN_PASSWORD=CopaAkrk
 
-Na Vercel, adicione:
+## Supabase
 
-```env
-VITE_SUPABASE_URL=cole_aqui_o_project_url
-VITE_SUPABASE_ANON_KEY=cole_aqui_a_anon_public_key
-VITE_ADMIN_PASSWORD=CopaAkrk
-```
+Execute o arquivo `supabase_schema.sql` no SQL Editor do Supabase.
 
-## Deploy na Vercel
+No Storage, crie um bucket público chamado:
 
-1. Vá em https://vercel.com/new
-2. Importe o repositório do GitHub.
-3. Framework Preset: Vite
-4. Adicione as variáveis de ambiente.
-5. Clique em Deploy.
-
-Depois do deploy, a Vercel vai gerar o link público do app.
+`avatars`
