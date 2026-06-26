@@ -1,0 +1,10 @@
+{
+  "name": "Bolão da Copa Credit",
+  "short_name": "Copa Credit",
+  "description": "Bolão interno com ranking Top 5",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06172f",
+  "theme_color": "#06172f",
+  "icons": []
+}
