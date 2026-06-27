@@ -1,25 +1,36 @@
-# Bolão da Copa Credit - Versão Universal Corrigida
+# Bolão da Copa Credit - Projeto Final
 
-Esta versão evita o erro anterior da Vercel porque o `index.html` aponta para:
+Estrutura correta para Vercel + Vite + Supabase.
 
-`/main.jsx`
+## Arquivos principais
 
-Os arquivos principais estão na raiz:
-- main.jsx
-- App.jsx
-- styles.css
+- package.json
+- vite.config.js
+- index.html
+- src/main.jsx
+- src/App.jsx
+- src/styles.css
+- public/manifest.json
+- supabase_schema.sql
 
-Também existe uma cópia dentro da pasta `src/` como segurança.
+## Como atualizar o GitHub corretamente
 
-## Como substituir no GitHub
+1. No GitHub, apague o conteúdo antigo do repositório ou substitua tudo.
+2. Extraia este ZIP.
+3. Envie todos os arquivos e pastas extraídos para a raiz do repositório.
+4. A estrutura final precisa ficar assim:
 
-1. Extraia este ZIP.
-2. No GitHub, envie os arquivos extraídos para o mesmo repositório.
-3. Pode substituir os arquivos antigos.
-4. Garanta que `index.html`, `main.jsx`, `App.jsx`, `styles.css`, `package.json` e `vite.config.js` estejam na raiz do repositório.
-5. Depois clique em Redeploy na Vercel.
+package.json
+vite.config.js
+index.html
+src/
+public/
+supabase_schema.sql
+README.md
 
-## Variáveis da Vercel
+5. Na Vercel, faça Redeploy.
+
+## Variáveis na Vercel
 
 - VITE_SUPABASE_URL
 - VITE_SUPABASE_ANON_KEY
@@ -27,5 +38,5 @@ Também existe uma cópia dentro da pasta `src/` como segurança.
 
 ## Supabase
 
-Execute `supabase_schema.sql` no SQL Editor.
-Crie um bucket público chamado `avatars`.
+Execute o arquivo supabase_schema.sql no SQL Editor.
+Crie um bucket público chamado avatars.
