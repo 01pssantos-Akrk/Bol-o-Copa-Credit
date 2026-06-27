@@ -1,36 +1,36 @@
-# Bolão da Copa Credit - Projeto Final
+# Bolão da Copa Credit - FINAL SEM APP.JSX
 
-Estrutura correta para Vercel + Vite + Supabase.
+Esta versão elimina a causa da tela azul:
 
-## Arquivos principais
+- Todo o app está dentro de `src/main.jsx`.
+- Não existe dependência de `App.jsx`.
+- `index.html` aponta diretamente para `/src/main.jsx`.
+- Se abrir somente tela azul, o GitHub/Vercel ainda está usando arquivos antigos.
 
-- package.json
-- vite.config.js
-- index.html
-- src/main.jsx
-- src/App.jsx
-- src/styles.css
-- public/manifest.json
-- supabase_schema.sql
+## Como aplicar
 
-## Como atualizar o GitHub corretamente
+1. No GitHub, exclua arquivos soltos antigos da raiz:
+   - App.jsx
+   - main.jsx
+   - styles.css
 
-1. No GitHub, apague o conteúdo antigo do repositório ou substitua tudo.
-2. Extraia este ZIP.
-3. Envie todos os arquivos e pastas extraídos para a raiz do repositório.
-4. A estrutura final precisa ficar assim:
+2. Mantenha/envie a estrutura deste ZIP:
+   - package.json
+   - vite.config.js
+   - index.html
+   - src/main.jsx
+   - src/styles.css
+   - public/manifest.json
+   - supabase_schema.sql
 
-package.json
-vite.config.js
-index.html
-src/
-public/
-supabase_schema.sql
-README.md
+3. Faça commit.
 
-5. Na Vercel, faça Redeploy.
+4. Na Vercel:
+   - Deployments
+   - Redeploy
+   - se aparecer, use Clear Build Cache / sem cache.
 
-## Variáveis na Vercel
+## Variáveis da Vercel
 
 - VITE_SUPABASE_URL
 - VITE_SUPABASE_ANON_KEY
@@ -38,5 +38,5 @@ README.md
 
 ## Supabase
 
-Execute o arquivo supabase_schema.sql no SQL Editor.
-Crie um bucket público chamado avatars.
+Execute `supabase_schema.sql`.
+Crie bucket público `avatars`.

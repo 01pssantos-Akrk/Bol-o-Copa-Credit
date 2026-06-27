@@ -1,7 +1,5 @@
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -38,9 +36,7 @@ body::before {
   margin-bottom: 18px;
 }
 
-.hero {
-  min-height: 130px;
-}
+.hero { min-height: 130px; }
 
 .tag {
   color: #ffe28a;
@@ -49,14 +45,8 @@ body::before {
   letter-spacing: 0.08em;
 }
 
-h1 {
-  margin: 0;
-  font-size: 34px;
-}
-
-p {
-  opacity: 0.88;
-}
+h1 { margin: 0; font-size: 34px; }
+p { opacity: 0.88; }
 
 .card {
   background: rgba(255, 255, 255, 0.13);
@@ -67,9 +57,7 @@ p {
   backdrop-filter: blur(12px);
 }
 
-.loginCard {
-  max-width: 760px;
-}
+.loginCard { max-width: 760px; }
 
 .grid {
   display: grid;
@@ -77,9 +65,7 @@ p {
   gap: 16px;
 }
 
-.wide {
-  grid-column: span 3;
-}
+.wide { grid-column: span 3; }
 
 label {
   display: block;
@@ -99,9 +85,7 @@ select {
   outline: none;
 }
 
-option {
-  color: #111;
-}
+option { color: #111; }
 
 button {
   width: 100%;
@@ -115,10 +99,7 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 button.ghost {
   width: auto;
@@ -127,41 +108,16 @@ button.ghost {
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-button.dark {
-  background: linear-gradient(135deg, #111827, #334155);
-  color: white;
-}
+button.dark { background: linear-gradient(135deg, #111827, #334155); color: white; }
+button.danger { background: linear-gradient(135deg, #ef5350, #c62828); color: white; }
+button.green { background: linear-gradient(135deg, #13b66b, #7effb8); color: #06172f; }
 
-button.danger {
-  background: linear-gradient(135deg, #ef5350, #c62828);
-  color: white;
-}
+hr { border-color: rgba(255, 255, 255, 0.18); margin: 22px 0; }
 
-button.green {
-  background: linear-gradient(135deg, #13b66b, #7effb8);
-  color: #06172f;
-}
+.score { display: flex; gap: 10px; align-items: center; }
+.score span { font-size: 28px; font-weight: 900; }
 
-hr {
-  border-color: rgba(255, 255, 255, 0.18);
-  margin: 22px 0;
-}
-
-.score {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.score span {
-  font-size: 28px;
-  font-weight: 900;
-}
-
-.small {
-  font-size: 13px;
-  opacity: 0.78;
-}
+.small { font-size: 13px; opacity: 0.78; }
 
 .row {
   display: flex;
@@ -189,19 +145,10 @@ hr {
   background: #10233d;
 }
 
-.avatar {
-  width: 54px;
-  height: 54px;
-}
+.avatar { width: 54px; height: 54px; }
+.avatarSmall { width: 42px; height: 42px; }
 
-.avatarSmall {
-  width: 42px;
-  height: 42px;
-}
-
-.medal {
-  font-size: 25px;
-}
+.medal { font-size: 25px; }
 
 .profileRow,
 .personLine {
@@ -217,22 +164,11 @@ hr {
   margin-bottom: 16px;
 }
 
-.kpi .card {
-  text-align: center;
-}
+.kpi .card { text-align: center; }
+.kpi strong { font-size: 26px; color: #f5c542; }
 
-.kpi strong {
-  font-size: 26px;
-  color: #f5c542;
-}
-
-.rules {
-  line-height: 1.7;
-}
-
-.rules strong {
-  color: #ffe28a;
-}
+.rules { line-height: 1.7; }
+.rules strong { color: #ffe28a; }
 
 .projection {
   background: rgba(19, 182, 107, 0.18);
@@ -242,10 +178,7 @@ hr {
   margin-top: 14px;
 }
 
-.projection strong {
-  font-size: 28px;
-  color: #51ff9f;
-}
+.projection strong { font-size: 28px; color: #51ff9f; }
 
 .notice,
 .warning {
@@ -256,22 +189,10 @@ hr {
   margin-top: 12px;
 }
 
-.warning {
-  margin-bottom: 18px;
-}
+.warning { margin-bottom: 18px; }
 
-.actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.actions button {
-  width: auto;
-  margin: 0;
-  padding: 9px 12px;
-  border-radius: 12px;
-}
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.actions button { width: auto; margin: 0; padding: 9px 12px; border-radius: 12px; }
 
 .qr {
   background: white;
@@ -281,36 +202,13 @@ hr {
   max-width: 100%;
 }
 
-.break {
-  word-break: break-all;
-}
+.break { word-break: break-all; }
 
 @media(max-width: 900px) {
-  .grid,
-  .kpi {
-    grid-template-columns: 1fr;
-  }
-
-  .wide {
-    grid-column: auto;
-  }
-
-  .hero,
-  .top {
-    display: block;
-  }
-
-  button.ghost {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .actions button {
-    width: 100%;
-  }
-
-  .row {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+  .grid, .kpi { grid-template-columns: 1fr; }
+  .wide { grid-column: auto; }
+  .hero, .top { display: block; }
+  button.ghost { width: 100%; margin-top: 10px; }
+  .actions button { width: 100%; }
+  .row { align-items: flex-start; flex-direction: column; }
 }
