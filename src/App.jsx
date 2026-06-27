@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'CopaAkrk'
+
 const supabase = SUPABASE_URL && SUPABASE_KEY ? createClient(SUPABASE_URL, SUPABASE_KEY) : null
 
 const INITIAL_POINTS = 10
@@ -89,7 +90,7 @@ function norm(value) {
     .trim()
 }
 
-function placeholder(name) {
+function avatarFallback(name) {
   const initial = (name || '?').trim().charAt(0) || '?'
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" rx="50" fill="#10233d"/><text x="50" y="60" font-size="36" text-anchor="middle" fill="#f5c542">${initial}</text></svg>`
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg)
@@ -119,24 +120,24 @@ function calcScore(bet, official) {
   const details = []
 
   if (bet.result_pick === official.result) {
-    const points = Number(bet.result_points || 0) * 1 * multiplier('result', bet.result_pick)
-    score += points
-    details.push('resultado +' + fmt(points))
+    const pts = Number(bet.result_points || 0) * 1 * multiplier('result', bet.result_pick)
+    score += pts
+    details.push('resultado +' + fmt(pts))
   }
 
   if (
     Number(bet.brazil_score) === Number(official.brazil_score) &&
     Number(bet.japan_score) === Number(official.japan_score)
   ) {
-    const points = Number(bet.score_points || 0) * 2 * multiplier('score')
-    score += points
-    details.push('placar +' + fmt(points))
+    const pts = Number(bet.score_points || 0) * 2 * multiplier('score')
+    score += pts
+    details.push('placar +' + fmt(pts))
   }
 
   if (norm(bet.first_goal_player) === norm(official.first_goal_player)) {
-    const points = Number(bet.player_points || 0) * 3 * multiplier('goal', bet.first_goal_player)
-    score += points
-    details.push('1º gol +' + fmt(points))
+    const pts = Number(bet.player_points || 0) * 3 * multiplier('goal', bet.first_goal_player)
+    score += pts
+    details.push('1º gol +' + fmt(pts))
   }
 
   return { score, details: details.join(', ') || 'sem acerto' }
@@ -174,8 +175,6 @@ export default function App() {
     player_points: 3,
   })
 
-  const envMissing = !supabase
-
   async function loadData() {
     if (!supabase) return
 
@@ -185,8 +184,12 @@ export default function App() {
       supabase.from('game_result').select('*').eq('id', 1).single(),
     ])
 
-    if (participantsRes.data) setParticipants(participantsRes.data)
-    if (betsRes.data) setBets(betsRes.data)
+    if (participantsRes.error) console.error(participantsRes.error)
+    if (betsRes.error) console.error(betsRes.error)
+    if (resultRes.error) console.error(resultRes.error)
+
+    setParticipants(participantsRes.data || [])
+    setBets(betsRes.data || [])
     if (resultRes.data) setGameResult(resultRes.data)
   }
 
@@ -209,8 +212,8 @@ export default function App() {
     }
   }, [])
 
-  const currentPlayer = participants.find((item) => item.cpf === currentCpf)
-  const currentBet = bets.find((item) => item.cpf === currentCpf)
+  const currentPlayer = participants.find((participant) => participant.cpf === currentCpf)
+  const currentBet = bets.find((bet) => bet.cpf === currentCpf)
 
   function pointsFor(participant) {
     const bet = bets.find((item) => item.cpf === participant.cpf)
@@ -258,10 +261,17 @@ export default function App() {
 
   async function uploadPhoto(cpf, file) {
     if (!file || !supabase) return null
+
     const extension = file.name.split('.').pop() || 'jpg'
     const path = `${cpf}-${Date.now()}.${extension}`
+
     const upload = await supabase.storage.from('avatars').upload(path, file, { upsert: true })
-    if (upload.error) return null
+
+    if (upload.error) {
+      console.error(upload.error)
+      return null
+    }
+
     const url = supabase.storage.from('avatars').getPublicUrl(path)
     return url.data.publicUrl
   }
@@ -269,20 +279,29 @@ export default function App() {
   async function enterPlayer() {
     try {
       setLoading(true)
+
+      if (!supabase) {
+        throw new Error('Supabase não configurado. Verifique as variáveis da Vercel.')
+      }
+
       const cpf = cleanCpf(playerForm.cpf)
+
       if (cpf.length !== 11) throw new Error('CPF precisa ter 11 números.')
       if (playerForm.full_name.trim().length < 3) throw new Error('Informe o nome completo.')
 
       const photoUrl = await uploadPhoto(cpf, playerForm.photo)
-      const exists = participants.find((p) => p.cpf === cpf)
+      const exists = participants.find((participant) => participant.cpf === cpf)
 
       if (exists) {
         const payload = {
           full_name: playerForm.full_name.trim(),
           team_name: playerForm.team_name,
         }
+
         if (photoUrl) payload.photo_url = photoUrl
+
         const response = await supabase.from('participants').update(payload).eq('cpf', cpf)
+
         if (response.error) throw response.error
       } else {
         const response = await supabase.from('participants').insert({
@@ -291,6 +310,7 @@ export default function App() {
           team_name: playerForm.team_name,
           photo_url: photoUrl,
         })
+
         if (response.error) throw response.error
       }
 
@@ -329,6 +349,7 @@ export default function App() {
     try {
       setLoading(true)
 
+      if (!supabase) throw new Error('Supabase não configurado.')
       if (!currentPlayer) throw new Error('Faça o cadastro antes de apostar.')
       if (currentBet) throw new Error('Este CPF já possui uma aposta.')
 
@@ -337,7 +358,7 @@ export default function App() {
         Number(betForm.score_points || 0) +
         Number(betForm.player_points || 0)
 
-      if (total <= 0) throw new Error('Distribua os 10 pontos entre os palpites.')
+      if (total <= 0) throw new Error('Distribua os pontos entre os palpites.')
       if (total > INITIAL_POINTS) throw new Error('A soma não pode passar de 10 pontos.')
 
       const payload = {
@@ -354,6 +375,7 @@ export default function App() {
       }
 
       const response = await supabase.from('bets').insert(payload)
+
       if (response.error) throw response.error
 
       alert('Aposta confirmada.')
@@ -368,6 +390,9 @@ export default function App() {
   async function updateOfficialResult() {
     try {
       setLoading(true)
+
+      if (!supabase) throw new Error('Supabase não configurado.')
+
       const response = await supabase
         .from('game_result')
         .update({
@@ -392,15 +417,21 @@ export default function App() {
 
   async function deleteParticipant(cpf) {
     if (!confirm('Excluir participante e aposta vinculada?')) return
+
     const response = await supabase.from('participants').delete().eq('cpf', cpf)
+
     if (response.error) alert(response.error.message)
+
     await loadData()
   }
 
   async function deleteBet(cpf) {
     if (!confirm('Excluir aposta e liberar nova aposta para este CPF?')) return
+
     const response = await supabase.from('bets').delete().eq('cpf', cpf)
+
     if (response.error) alert(response.error.message)
+
     await loadData()
   }
 
@@ -414,7 +445,7 @@ export default function App() {
           <div className="row" key={person.cpf}>
             <div className="rankUser">
               <span className="medal">{medals[index]}</span>
-              <img className="avatarSmall" src={person.photo_url || placeholder(person.full_name)} />
+              <img className="avatarSmall" src={person.photo_url || avatarFallback(person.full_name)} />
               <div>
                 <b>{index + 1}. {person.full_name}</b>
                 <br />
@@ -445,7 +476,7 @@ export default function App() {
           </div>
         </div>
 
-        {envMissing && (
+        {!supabase && (
           <div className="warning">
             Configure as variáveis da Vercel: VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.
           </div>
@@ -486,13 +517,14 @@ export default function App() {
             onChange={(event) => setPlayerForm({ ...playerForm, photo: event.target.files?.[0] || null })}
           />
 
-          <button disabled={loading || envMissing} onClick={enterPlayer}>
+          <button disabled={loading || !supabase} onClick={enterPlayer}>
             Entrar no Bolão
           </button>
 
           <hr />
 
           <h2>Entrar como Administrador</h2>
+
           <label>Senha Admin</label>
           <input
             type="password"
@@ -500,6 +532,7 @@ export default function App() {
             onChange={(event) => setAdminPassword(event.target.value)}
             placeholder="Senha"
           />
+
           <button className="dark" onClick={enterAdmin}>
             Acessar Painel Admin
           </button>
@@ -516,6 +549,7 @@ export default function App() {
             <h1>🏆 Bolão da Copa Credit</h1>
             <p>Painel do Administrador</p>
           </div>
+
           <button className="ghost" onClick={logout}>
             Sair
           </button>
@@ -616,13 +650,14 @@ export default function App() {
           <div className="card wide">
             <h2>📋 Controle dos cadastros</h2>
             {participants.length === 0 && <p>Nenhum cadastro.</p>}
+
             {participants.map((person) => {
               const hasBet = bets.some((item) => item.cpf === person.cpf)
 
               return (
                 <div className="row" key={person.cpf}>
                   <div className="rankUser">
-                    <img className="avatarSmall" src={person.photo_url || placeholder(person.full_name)} />
+                    <img className="avatarSmall" src={person.photo_url || avatarFallback(person.full_name)} />
                     <div>
                       <b>{person.full_name}</b>
                       <br />
@@ -634,6 +669,7 @@ export default function App() {
                     <button className="danger" onClick={() => deleteParticipant(person.cpf)}>
                       Excluir
                     </button>
+
                     {hasBet && (
                       <button className="green" onClick={() => deleteBet(person.cpf)}>
                         Liberar nova aposta
@@ -648,6 +684,7 @@ export default function App() {
           <div className="card wide">
             <h2>🧾 Controle das apostas</h2>
             {bets.length === 0 && <p>Nenhuma aposta.</p>}
+
             {bets.map((item) => {
               const person = participants.find((participant) => participant.cpf === item.cpf)
               const calculated = calcScore(item, gameResult)
@@ -665,6 +702,7 @@ export default function App() {
                       Total: {fmt(item.total_allocated)}/10 • Possibilidade: {fmt(item.max_possible)} pts • {calculated.details}
                     </small>
                   </div>
+
                   <div className="badge">{fmt(calculated.score)} pts</div>
                 </div>
               )
@@ -682,6 +720,7 @@ export default function App() {
           <h1>🏆 Bolão da Copa Credit</h1>
           <p>10 pontos por CPF • 1 aposta por CPF</p>
         </div>
+
         <button className="ghost" onClick={logout}>
           Sair
         </button>
@@ -690,13 +729,16 @@ export default function App() {
       <div className="grid">
         <div className="card">
           <h2>Olá, {currentPlayer?.full_name?.split(' ')[0] || 'participante'}</h2>
+
           <div className="profileRow">
-            <img className="avatar" src={currentPlayer?.photo_url || placeholder(currentPlayer?.full_name)} />
+            <img className="avatar" src={currentPlayer?.photo_url || avatarFallback(currentPlayer?.full_name)} />
+
             <div>
               <p>{currentPlayer?.team_name}</p>
               <div className="badge">{fmt(currentPlayer ? pointsFor(currentPlayer) : INITIAL_POINTS)} pts</div>
             </div>
           </div>
+
           <div className="notice small">
             Só é válida <b>1 aposta por CPF</b>. Após confirmar, apenas o Admin pode liberar alteração.
           </div>
@@ -803,6 +845,7 @@ export default function App() {
 
         <div className="card wide">
           <h2>📜 Minha aposta</h2>
+
           {currentBet ? (
             <div className="row">
               <div>
@@ -816,6 +859,7 @@ export default function App() {
                   Total: {fmt(currentBet.total_allocated)}/10 • Possibilidade: {fmt(currentBet.max_possible)} pts • {calcScore(currentBet, gameResult).details}
                 </small>
               </div>
+
               <div className="badge">{fmt(calcScore(currentBet, gameResult).score)} pts</div>
             </div>
           ) : (

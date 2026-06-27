@@ -1,26 +1,23 @@
-# Bolão da Copa Credit - Projeto Definitivo
+# Bolão da Copa Credit - Versão Universal Corrigida
 
-Este pacote substitui completamente o template padrão do Vite.
+Esta versão evita o erro anterior da Vercel porque o `index.html` aponta para:
 
-## Estrutura correta
+`/main.jsx`
 
-- package.json
-- vite.config.js
-- index.html
-- src/main.jsx
-- src/App.jsx
-- src/styles.css
-- public/manifest.json
-- supabase_schema.sql
+Os arquivos principais estão na raiz:
+- main.jsx
+- App.jsx
+- styles.css
 
-## Para substituir no GitHub
+Também existe uma cópia dentro da pasta `src/` como segurança.
 
-1. Baixe este ZIP.
-2. Extraia.
-3. No GitHub, apague/substitua os arquivos antigos.
-4. Envie todos os arquivos de dentro da pasta extraída.
-5. Faça commit.
-6. Na Vercel, clique em Redeploy.
+## Como substituir no GitHub
+
+1. Extraia este ZIP.
+2. No GitHub, envie os arquivos extraídos para o mesmo repositório.
+3. Pode substituir os arquivos antigos.
+4. Garanta que `index.html`, `main.jsx`, `App.jsx`, `styles.css`, `package.json` e `vite.config.js` estejam na raiz do repositório.
+5. Depois clique em Redeploy na Vercel.
 
 ## Variáveis da Vercel
 
@@ -30,5 +27,5 @@ Este pacote substitui completamente o template padrão do Vite.
 
 ## Supabase
 
-Execute o arquivo `supabase_schema.sql` no SQL Editor.
-Crie o bucket público `avatars` no Storage.
+Execute `supabase_schema.sql` no SQL Editor.
+Crie um bucket público chamado `avatars`.

@@ -73,5 +73,4 @@ create policy "result_select" on public.game_result for select using (true);
 drop policy if exists "result_update" on public.game_result;
 create policy "result_update" on public.game_result for update using (true);
 
--- IMPORTANTE:
 -- No Supabase Storage, crie um bucket público chamado: avatars
