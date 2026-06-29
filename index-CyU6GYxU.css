@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#06172f" />
     <link rel="manifest" href="/manifest.json" />
     <title>Bolão da Copa Credit</title>
+    <script type="module" crossorigin src="/assets/index-CqCSSVjP.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CyU6GYxU.css">
   </head>
   <body>
     <div id="root">
@@ -13,6 +15,5 @@
         Carregando Bolão da Copa Credit...
       </div>
     </div>
-    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

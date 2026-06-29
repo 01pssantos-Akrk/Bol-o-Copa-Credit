@@ -1,19 +1,54 @@
-{
-  "name": "bolao-copa-credit-nuclear-final",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "@supabase/supabase-js": "latest"
-  },
-  "devDependencies": {}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Segoe UI, sans-serif;
+  color: white;
+  min-height: 100vh;
+  background:
+    linear-gradient(135deg, rgba(4,18,42,.96), rgba(8,80,136,.9), rgba(245,197,66,.2)),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"><rect width="1200" height="800" fill="%23085088"/><circle cx="950" cy="130" r="88" fill="%23f5c542"/><path d="M0 560 C220 500 360 625 570 565 C760 510 960 615 1200 535 L1200 800 L0 800 Z" fill="%23f5c542" opacity=".8"/><path d="M0 650 C250 590 420 690 650 630 C850 575 990 680 1200 610 L1200 800 L0 800 Z" fill="%23ffffff" opacity=".35"/><text x="60" y="130" font-size="66" fill="white" opacity=".20">RIO</text><text x="60" y="190" font-size="38" fill="white" opacity=".16">copa • praia • credit</text></svg>');
+  background-size: cover;
+  background-attachment: fixed;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 22px; }
+.hero { padding: 24px 0; }
+.tag { color: #ffe28a; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; margin: 0 0 8px; }
+h1 { font-size: 36px; margin: 0 0 8px; }
+h2 { margin-top: 0; }
+.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.card { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24); border-radius: 24px; padding: 20px; box-shadow: 0 20px 60px rgba(0,0,0,.30); backdrop-filter: blur(10px); }
+.wide { grid-column: span 3; }
+label { display: block; margin: 12px 0 6px; font-size: 13px; font-weight: 800; }
+input, select { width: 100%; padding: 13px; border-radius: 14px; border: 1px solid rgba(255,255,255,.25); background: rgba(0,0,0,.34); color: white; outline: none; }
+option { color: #111; }
+button { width: 100%; padding: 13px; margin-top: 14px; border: 0; border-radius: 16px; background: linear-gradient(135deg,#f5c542,#fff1a4); color: #06172f; font-weight: 900; cursor: pointer; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.secondary { background: rgba(255,255,255,.15); color: white; border: 1px solid rgba(255,255,255,.25); }
+.danger { background: linear-gradient(135deg,#ef5350,#c62828); color: white; }
+.green { background: linear-gradient(135deg,#13b66b,#7effb8); color: #06172f; }
+.notice { background: rgba(245,197,66,.16); border: 1px solid rgba(245,197,66,.38); border-radius: 16px; padding: 12px; margin: 14px 0; line-height: 1.4; }
+.ok { background: rgba(19,182,107,.16); border-color: rgba(19,182,107,.44); }
+.err { background: rgba(239,83,80,.18); border-color: rgba(239,83,80,.44); }
+.row { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,.14); padding: 12px; }
+.person { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #f5c542; background: #10233d; }
+.badge { background: rgba(245,197,66,.18); color: #ffe28a; border-radius: 999px; padding: 8px 12px; font-weight: 900; white-space: nowrap; }
+.scorebox { display: flex; gap: 10px; align-items: center; }
+.scorebox span { font-size: 28px; font-weight: 900; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.actions button { width: auto; margin: 0; padding: 9px 12px; }
+.meter { height: 14px; background: rgba(0,0,0,.45); border-radius: 999px; overflow: hidden; border: 1px solid rgba(255,255,255,.18); margin-top: 10px; }
+.meter div { height: 100%; background: linear-gradient(90deg,#13b66b,#f5c542,#ef5350); transition: .2s; }
+.risk { font-size: 18px; font-weight: 900; }
+.low { color: #7effb8; }
+.medium { color: #ffe28a; }
+.high { color: #ff8f8f; }
+.qr { width: 220px; max-width: 100%; padding: 12px; background: white; border-radius: 16px; }
+.small { font-size: 13px; opacity: .82; word-break: break-word; }
+@media(max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .wide { grid-column: auto; }
+  .row { align-items: flex-start; flex-direction: column; }
+  .actions button { width: 100%; }
 }
